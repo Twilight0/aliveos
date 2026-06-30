@@ -35,9 +35,14 @@ xorg-xprop
 xorg-xrandr
 xorg-xrdb
 xorg-setxkbmap
-xf86-input-libinput
-xf86-video-fbdev
-xf86-video-vesa
+xlibre-input-libinput
+xlibre-video-amdgpu
+xlibre-video-ati
+xlibre-video-intel
+xlibre-video-nouveau
+xlibre-video-fbdev
+xlibre-video-vesa
+xlibre-video-vmware
 mesa
 mesa-utils
 
