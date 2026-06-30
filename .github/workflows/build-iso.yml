@@ -1,0 +1,60 @@
+name: Build AliveOS Live ISO
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+      options: --privileged
+    
+    steps:
+      - name: Install Git and Build Dependencies
+        run: |
+          pacman -Sy --noconfirm git archiso grep binutils libarchive
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Systemd Symlinks & Services
+        run: |
+          echo "Setting up systemd symlinks for services..."
+          # Create systemd target wants directory
+          mkdir -p profile/airootfs/etc/systemd/system/multi-user.target.wants
+          mkdir -p profile/airootfs/etc/systemd/system/display-manager.service.wants
+
+          # Symlink NetworkManager and live init service
+          ln -sf /usr/lib/systemd/system/NetworkManager.service profile/airootfs/etc/systemd/system/multi-user.target.wants/NetworkManager.service
+          ln -sf /usr/lib/systemd/system/aliveos-live-init.service profile/airootfs/etc/systemd/system/multi-user.target.wants/aliveos-live-init.service
+          
+          # Symlink lightdm to display-manager service
+          ln -sf /usr/lib/systemd/system/lightdm.service profile/airootfs/etc/systemd/system/display-manager.service
+
+      - name: Build AliveOS ISO
+        run: |
+          echo "Starting mkarchiso build..."
+          # Create work and out directories
+          mkdir -p work out
+          
+          # Run archiso build
+          mkarchiso -v -w work -o out profile
+
+      - name: Upload ISO Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AliveOS-Cinnamon-Live-ISO
+          path: out/*.iso
+          retention-days: 5
+
+      - name: Release ISO (on tag)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: out/*.iso
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

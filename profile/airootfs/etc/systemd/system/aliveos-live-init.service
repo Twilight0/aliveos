@@ -1,0 +1,12 @@
+[Unit]
+Description=AliveOS Live Environment Initialization
+Before=display-manager.service
+After=systemd-user-sessions.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/aliveos-live-init
+
+[Install]
+WantedBy=multi-user.target

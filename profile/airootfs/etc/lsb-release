@@ -1,0 +1,4 @@
+DISTRIB_ID=AliveOS
+DISTRIB_RELEASE=rolling
+DISTRIB_CODENAME=cinnamon
+DISTRIB_DESCRIPTION="AliveOS Linux (Cinnamon)"

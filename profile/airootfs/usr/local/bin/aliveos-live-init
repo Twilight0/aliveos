@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+# Exit if not running as root
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run as root"
+  exit 1
+fi
+
+echo "Initializing AliveOS Live Environment..."
+
+# 1. Create the liveuser if it doesn't exist
+if ! id "liveuser" &>/dev/null; then
+  echo "Creating liveuser..."
+  # Create user with empty password (but hashed to satisfy security checks)
+  useradd -m -g users -G wheel,audio,video,storage,power,optical,lp -p "$(openssl passwd -6 "")" liveuser
+  
+  # Ensure home directory permissions are correct
+  chown -R liveuser:users /home/liveuser
+fi
+
+# 2. Configure passwordless sudo for wheel group
+echo "Configuring sudo..."
+mkdir -p /etc/sudoers.d
+echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/10-liveuser
+chmod 440 /etc/sudoers.d/10-liveuser
+
+# 3. Configure LightDM for automatic login
+echo "Configuring LightDM autologin..."
+mkdir -p /etc/lightdm
+cat <<EOF > /etc/lightdm/lightdm.conf
+[LightDM]
+run-directory=/run/lightdm
+
+[Seat:*]
+autologin-user=liveuser
+autologin-user-timeout=0
+user-session=cinnamon
+session-wrapper=/etc/lightdm/Xsession
+greeter-session=lightdm-slick-greeter
+EOF
+
+# 4. Set up custom wallpaper and desktop settings for liveuser
+# We can copy any skel templates if needed, or set up gsettings
+echo "Applying Cinnamon configuration..."
+# Compile schemas in case they were updated
+glib-compile-schemas /usr/share/glib-2.0/schemas/ 2>/dev/null || true
+
+# Pre-set Cinnamon settings via gsettings overrides for the live environment
+# This must run as the liveuser using dbus
+sudo -u liveuser dbus-run-session gsettings set org.cinnamon.desktop.background picture-uri "file:///usr/share/backgrounds/aliveos/default.png" 2>/dev/null || true
+sudo -u liveuser dbus-run-session gsettings set org.cinnamon.theme name "Garuda-Dark" 2>/dev/null || true
+sudo -u liveuser dbus-run-session gsettings set org.cinnamon.desktop.interface icon-theme "BeautyLine" 2>/dev/null || true
+
+echo "AliveOS Live Environment Initialized successfully."

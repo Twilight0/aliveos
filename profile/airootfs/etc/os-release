@@ -1,0 +1,11 @@
+NAME="AliveOS"
+PRETTY_NAME="AliveOS Linux"
+ID=aliveos
+ID_LIKE=arch
+BUILD_ID=rolling
+ANSI_COLOR="38;2;160;32;240"
+HOME_URL="https://github.com/twilight/aliveos"
+DOCUMENTATION_URL="https://github.com/twilight/aliveos/wiki"
+SUPPORT_URL="https://github.com/twilight/aliveos/issues"
+BUG_REPORT_URL="https://github.com/twilight/aliveos/issues"
+LOGO=aliveos

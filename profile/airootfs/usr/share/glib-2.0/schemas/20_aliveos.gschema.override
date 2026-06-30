@@ -1,0 +1,15 @@
+[org.cinnamon.desktop.background]
+picture-uri='file:///usr/share/backgrounds/aliveos/default.png'
+picture-options='zoom'
+
+[org.cinnamon.desktop.interface]
+icon-theme='aliveos'
+gtk-theme='Mint-Y-Dark-Teal'
+cursor-theme='Adwaita'
+
+[org.cinnamon.theme]
+name='Orchidea'
+
+[org.cinnamon]
+enabled-applets=['panel1:left:0:menu@cinnamon.org:1', 'panel1:left:1:pacman-updates@Twilight0:2', 'panel1:left:2:SpicesUpdate@claudiux:3', 'panel1:center:0:grouped-window-list@cinnamon.org:4', 'panel1:right:1:spicy-clipboard-applet@Twilight0:10', 'panel1:right:2:nerd-dict-applet@Twilight0:11', 'panel1:right:3:placesCenter@scollins:12', 'panel1:right:4:network@cinnamon.org:8', 'panel1:right:5:sound@cinnamon.org:7', 'panel1:right:6:power@cinnamon.org:9', 'panel1:right:7:calendar@cinnamon.org:6']
+
