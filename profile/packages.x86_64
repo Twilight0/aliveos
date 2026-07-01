@@ -61,7 +61,6 @@ cinnamon-settings-daemon
 gsettings-desktop-schemas
 numlockx
 file-roller
-nemo-fileroller
 
 # Graphical Installer
 calamares
@@ -87,9 +86,22 @@ dconf-editor
 
 # Custom AliveOS Repo Packages
 dory
+dory-audio-tab
+dory-compare
+dory-dropbox
+dory-emblems
+dory-fileroller
+dory-image-converter
+dory-media-columns
+dory-pastebin
+dory-preview
+dory-python
+dory-repairer
+dory-seahorse
+dory-share
+dory-terminal
 xdg-desktop-portal-xapp-filepicker
 viewmd
-httptoolkit-bin
 aliveos-cinnamon-spices
 nerd-dictation
 aliveos-icon-theme
